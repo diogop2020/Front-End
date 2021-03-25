@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Monster Slayer</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="foundation.min.css" />
+    <link rel="stylesheet" href="app.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <section class="row">
+        <div class="small-6 columns">
+          <h1 class="text-center">YOU</h1>
+          <div class="healthbar">
+            <div
+              class="healthbar text-center"
+              style="background-color: green; margin: 0;"
+              :style="{width:playerHealth+'%'}"
+            ></div>
+          </div>
+        </div>
+        <div class="small-6 columns">
+          <h1 class="text-center">MONSTER</h1>
+          <div class="healthbar">
+            <div
+              class="healthbar text-center"
+              style="background-color: green; margin: 0;"
+              :style="{width:monsterHealth+'%'}"
+            ></div>
+          </div>
+        </div>
+      </section>
+      <section class="row controls">
+        <div class="small-12 columns" v-if="startGame===false">
+          <button id="start-game" @click="comecarJogo()">START NEW GAME</button>
+        </div>
+      </section>
+      <section class="row controls">
+        <div class="small-12 columns">
+          <button id="attack" @click="ataque()">ATTACK</button>
+          <button id="special-attack" @click="specialattack()">SPECIAL ATTACK</button>
+          <button id="heal" @click="heal()">HEAL</button>
+          <button id="give-up">GIVE UP</button>
+        </div>
+      </section>
+      <section class="row log">
+        <div class="small-12 columns">
+          <ul>
+            <li>historico : 
+                historico_monstro
+                historico_player
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </body>
+
+  <script>
+    var app = new Vue({
+      el: "#app",
+      data: {
+        playerHealth: 100,
+        monsterHealth: 100,
+        startGame: false,
+
+        historico: [],
+      },
+      methods: {
+        comecarJogo: function () {
+          this.startGame = true;
+          this.playerHealth = 100;
+          this.monsterHealth = 100;
+        },
+        ataque:function(){
+            var max=25;
+            var min=1;
+            var dano=Math.max(Math.floor(Math.random() * max) + 1, min);
+            this.playerHealth=this.playerHealth-dano;
+
+            var maxmonstro=30;
+            var minmonstro=1;
+            var danomonstro=Math.max(Math.floor(Math.random() * maxmonstro) + 1, minmonstro);
+            this.monsterHealth=this.monsterHealth-danomonstro;
+
+            this.verificaVida(this.playerHealth,this.monsterHealth);
+        },
+        verificaVida:function(playerHealth,monsterHealth){
+            if(playerHealth<=0){
+                alert("Monstro WIN");
+                this.startGame=false;
+                window.location.reload();
+            }
+            else if(monsterHealth<=0){
+                alert("Player WIN");
+                this.startGame=false;
+                window.location.reload();
+            }
+        },
+        specialattack:function(){
+            var maxmonstro=40;
+            var minmonstro=1;
+            var danomonstro=Math.max(Math.floor(Math.random() * maxmonstro) + 1, minmonstro);
+            this.monsterHealth=this.monsterHealth-danomonstro;
+        },
+        heal:function(){
+            var healing=20;
+
+            if(this.playerHealth+healing>=100){
+                this.playerHealth=100;
+            }
+            else{
+                this.playerHealth=this.playerHealth+healing;
+            }
+        },
+        giveup:function(){
+            
+        },
+        historico:function(){
+          var historico_monstro = historico_monstro + danomonstro
+          var historico_player = historico_player + dano
+        },
+      },
+    });
+  </script>
+</html>
